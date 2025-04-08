@@ -202,6 +202,7 @@ def products():
 def test_redirect():
     return redirect(url_for('index'))
 
+
 @app.route('/leaderboard')
 def leaderboard():
     leaderboard_data = get_leaderboard_data()
