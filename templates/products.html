@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Products</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='products.css') }}"> 
+</head>
+<body>
+    <h1>Available Products</h1>
+    <a href="{{ url_for('index') }}">Back to Home</a>
+
+    <section class="product-list">
+        {% if products %}
+            {% for product in products %}
+                <div class="product-card">
+                    <!-- ✅ Fix: Ensure 'product_id' exists before using it -->
+                    <a href="{{ url_for('single_item', product_id=product['product_id']) }}">
+
+                        <img src="{{ url_for('static', filename=product.get('image_path', '')[7:]) }}" alt="Product Image">
+                    </a>
+                    <h3>{{ product.get('product_name', 'No Name') }}</h3>
+                    <p><strong>Seller:</strong> {{ product.get('seller_name', 'Unknown') }}</p>
+                    <p>{{ product.get('description', 'No Description') }}</p>
+                    <p><strong>Price:</strong> ₹{{ product.get('amount', 0) }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No products available.</p>
+        {% endif %}
+    </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const productCards = document.querySelectorAll(".product-card");
+
+            productCards.forEach(card => {
+                card.addEventListener("click", function (event) {
+                    // Prevent redirect if clicking outside image
+                    if (!event.target.closest("a")) {
+                        event.preventDefault();
+                    }
+
+                    // Remove "selected" class from all other products
+                    productCards.forEach(c => c.classList.remove("selected"));
+
+                    // Add "selected" class to the clicked product
+                    this.classList.add("selected");
+                });
+            });
+        });
+    </script>
+
+<a href="{{ url_for('leaderboard') }}">
+    <button>View Leaderboard</button>
+</a>
+
+    
+</body>
+</html>

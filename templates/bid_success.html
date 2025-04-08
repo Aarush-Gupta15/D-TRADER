@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bid Placed Successfully</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bid_success.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>✅ Bid Placed Successfully!</h1>
+
+        <p>Your bid for <strong>{{ product.product_name }}</strong> has been recorded.</p>
+
+       
+
+        <a href="{{ url_for('leaderboard') }}"><button>🏆 View Leaderboard</button></a>
+    </div>
+</body>
+</html>

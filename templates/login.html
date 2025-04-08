@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>  
+    <link rel="stylesheet" href="/static/login.css">  <!-- Link to external CSS -->
+</head>
+<body>
+    <div class="container">
+        <!-- Login Section -->
+        <div class="login-section">
+            <h2>Login to Your Account</h2>
+
+            {% if error %}
+                <p class="error-message">{{ error }}</p>  <!-- Show error if login fails -->
+            {% endif %}
+
+            <form action="/login" method="POST">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+
+                <button type="submit">Login</button>
+            </form>
+
+            <p>Don't have an account? <a href="/register">Sign up here</a></p>
+        </div>
+
+        <!-- Register Section -->
+        <div class="register-section">
+            <h2>New Here?</h2>
+            <p>Sign up and discover a great amount of new opportunities!</p>
+            <a href="/register"><button>Sign up </button></a>
+        </div>
+    </div>
+</body>
+</html>

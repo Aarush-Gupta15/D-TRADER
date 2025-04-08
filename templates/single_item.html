@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.product_name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='individual.css') }}">
+</head>
+<body>
+    <div class="product-details-page">
+        <!-- Product Image on the Left -->
+        <div class="product-image">
+            <img src="{{ url_for('static', filename=product.image_path[7:]) }}" alt="Product Image">
+        </div>
+        
+        <!-- Product Details on the Right -->
+        <div class="product-details">
+            <h1>{{ product.product_name }}</h1>
+            <p><strong>Seller:</strong> {{ product.seller_name }}</p>
+            <p><strong>Description: </strong>{{ product.description }}</p>
+            <p><strong>Price:</strong> ₹{{ product.amount }}</p>
+        </div>
+    </div>
+    
+    <!-- Back to Products Button at the Bottom Half -->
+    <a class="back-button" href="{{ url_for('products') }}">Back to Products</a>
+</body>
+</html>

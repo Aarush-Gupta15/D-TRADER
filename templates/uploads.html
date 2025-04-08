@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D-Trader</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles1.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Welcome to D Trader</h1>
+        <form action="/uploads" method="POST" enctype="multipart/form-data">
+            <input type="text" name="name" placeholder="Item Name" required>
+            <textarea name="description" placeholder="Item Description"></textarea>
+            <input type="text" name="amount" placeholder="Price" required>
+            
+            <!-- ✅ File input allows both Camera & Gallery selection -->
+            <label for="file">Choose an image:</label>
+            <input type="file" name="file" id="file" accept="image/*" required>  
+        
+            <button type="submit">Upload Item</button>
+        </form>
+        
+        <!-- ✅ Message for uploaded items -->
+        {% if user_products %}
+            <p>Your previous selling items:</p>
+        {% else %}
+            <p>Sell now</p>
+        {% endif %}
+    </header>
+
+    <!-- ✅ Display uploaded products -->
+    <section class="product-list">
+        {% if user_products %}
+            {% for product in user_products %}
+                <div class="product-card">
+                    <!-- <p>Debug: {{ product.image_path }}</p> Debugging -->
+                    
+                    <!-- ✅ Fixed Link (Ensure seller_single_item exists in Flask) -->
+                    <a href="{{ url_for('seller_single_item', product_id=product.product_id) }}">
+                        <img src="{{ url_for('static', filename=product.image_path.lstrip('static/')) }}" alt="Product Image">
+                    </a>
+                    
+                    <h3>{{ product.product_name }}</h3>
+                    <p>{{ product.description }}</p>
+                    <p><strong>Price:</strong> ₹{{ product.amount }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No products available.</p>
+        {% endif %}
+    </section>
+
+    <!-- ✅ View all products button -->
+    <a href="{{ url_for('products') }}">
+        <button>View all Products</button>
+    </a>
+</body>
+</html>

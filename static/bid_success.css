@@ -1,0 +1,24 @@
+.success-container {
+    text-align: center;
+    margin-top: 100px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.success-container h1 {
+    color: green;
+    font-size: 2rem;
+}
+
+.success-container button {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.success-container button:hover {
+    background-color: #005fa3;
+}

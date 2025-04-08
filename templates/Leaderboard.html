@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='leaderboard.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Auction Leaderboard</h1>
+        <a href="{{ url_for('products') }}">
+            <button class="btn-12"><span>View all Products</span></button>
+            
+        </a>
+    
+
+    </header>
+
+    <table>
+        <tr>
+            <th>Product</th>
+            <th>Initial Amount</th>
+            <th>Highest Bid</th>
+            <th>Seller</th>
+            <th>Action</th> <!-- ✅ New column for "Place a Bid" button -->
+        </tr>
+        {% for product in leaderboard %}
+        <tr>
+            <td>
+                <img src="{{ url_for('static', filename=product.product_image[7:]) }}" alt="Product Image" width="50">
+                <h2>{{ product.product_name }}</h2>
+            </td>
+            <td><h3>₹{{ product.initial_amount }}</h3></td>
+            <td><h3>₹{{ product.highest_bid }}</h3></td>
+            <td><h3>{{ product.seller_name }}</h3></td>
+            <td>
+                <!-- ✅ "Place a Bid" button -->
+                <a href="{{ url_for('place_bid', product_id=product.product_id) }}">
+                    <button class="btn-12"><span>Place a Bid</span></button>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+ 
+</body>
+</html>
