@@ -2,8 +2,7 @@ CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(80) UNIQUE NOT NULL,
     password_hash VARCHAR(128) NOT NULL,
-    role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
-    CHECK (role = 'admin' OR role = 'user')
+    role ENUM('admin_user', 'seller', 'customer') NOT NULL DEFAULT 'customer'
 );
 
 -- Ensure only ONE admin exists

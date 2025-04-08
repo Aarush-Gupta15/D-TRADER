@@ -2,27 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ product.product_name }}</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='individual.css') }}">
 </head>
 <body>
-    <div class="product-details-page">
-        <!-- Product Image on the Left -->
-        <div class="product-image">
-            <img src="{{ url_for('static', filename=product.image_path[7:]) }}" alt="Product Image">
-        </div>
-        
-        <!-- Product Details on the Right -->
-        <div class="product-details">
-            <h1>{{ product.product_name }}</h1>
-            <p><strong>Seller:</strong> {{ product.seller_name }}</p>
-            <p><strong>Description: </strong>{{ product.description }}</p>
-            <p><strong>Price:</strong> ₹{{ product.amount }}</p>
+    <div class="product-container">
+        <div class="product-card">
+            <!-- Product Image -->
+            <div class="product-image">
+                <img src="{{ url_for('static', filename=product.image_path[7:]) }}" alt="Product Image">
+            </div>
+
+            <!-- Product Info -->
+            <div class="product-info">
+                <h1>{{ product.product_name }}</h1>
+                <p class="price">₹{{ product.amount }}</p>
+                <p><strong>Seller:</strong> {{ product.seller_name }}</p>
+                <p><strong>Description:</strong> {{ product.description }}</p>
+
+                <div class="spec-box">
+                    <!-- <p><strong>Category:</strong> Electronics</p> -->
+                    <p><strong>Condition:</strong> New</p>
+                    <p><strong>Status:</strong> In Stock</p>
+                </div>
+
+                <div class="button-group">
+                    <a href="{{ url_for('products') }}" class="btn-back">← Back to Products</a>
+                    <button class="btn-share" onclick="navigator.share ? navigator.share({ title: document.title, url: window.location.href }) : alert('Sharing not supported on this browser.')">📤 Share</button>
+                </div>
+            </div>
         </div>
     </div>
-    
-    <!-- Back to Products Button at the Bottom Half -->
-    <a class="back-button" href="{{ url_for('products') }}">Back to Products</a>
 </body>
 </html>

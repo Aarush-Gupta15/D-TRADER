@@ -4,31 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Products</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='products.css') }}"> 
 </head>
 <body>
-    <h1>Available Products</h1>
-    <a href="{{ url_for('index') }}">Back to Home</a>
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="{{ url_for('index') }}" class="home-button">
+                <span>Home</span>
+            </a>
+        </div>
 
-    <section class="product-list">
-        {% if products %}
-            {% for product in products %}
-                <div class="product-card">
-                    <!-- ✅ Fix: Ensure 'product_id' exists before using it -->
-                    <a href="{{ url_for('single_item', product_id=product['product_id']) }}">
+        <div class="nav-search">
+             <h1>D-Trader</h1> 
+            <input type="text" id="searchInput" placeholder="Search Products..." onkeyup="searchItems()" />
+        </div>
 
-                        <img src="{{ url_for('static', filename=product.get('image_path', '')[7:]) }}" alt="Product Image">
-                    </a>
-                    <h3>{{ product.get('product_name', 'No Name') }}</h3>
-                    <p><strong>Seller:</strong> {{ product.get('seller_name', 'Unknown') }}</p>
-                    <p>{{ product.get('description', 'No Description') }}</p>
-                    <p><strong>Price:</strong> ₹{{ product.get('amount', 0) }}</p>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>No products available.</p>
-        {% endif %}
-    </section>
+
+        <div class="nav-right">
+            <a href="{{ url_for('leaderboard') }}" class="nav-link">View Leaderboard</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Available Products</h1>
+
+        <section class="product-list" id="productList">
+            {% if products %}
+                {% for product in products %}
+                    <div class="product-card">
+                        <a href="{{ url_for('single_item', product_id=product['product_id']) }}">
+                            <img src="{{ url_for('static', filename=product.get('image_path', '')[7:]) }}" alt="Product Image">
+                        </a>
+                        <h3>{{ product.get('product_name', 'No Name') }}</h3>
+                        <p><strong>Seller:</strong> {{ product.get('seller_name', 'Unknown') }}</p>
+                        <p>{{ product.get('description', 'No Description') }}</p>
+                        <p><strong>Price:</strong> ₹{{ product.get('amount', 0) }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No products available.</p>
+            {% endif %}
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 D-Trader. All rights reserved.</p>
+    </footer>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -36,25 +59,29 @@
 
             productCards.forEach(card => {
                 card.addEventListener("click", function (event) {
-                    // Prevent redirect if clicking outside image
                     if (!event.target.closest("a")) {
                         event.preventDefault();
                     }
-
-                    // Remove "selected" class from all other products
                     productCards.forEach(c => c.classList.remove("selected"));
-
-                    // Add "selected" class to the clicked product
                     this.classList.add("selected");
                 });
             });
         });
+
+        function searchItems() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const productCards = document.querySelectorAll('.product-card');
+            
+            productCards.forEach(card => {
+                const productName = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                if (productName.includes(input) || description.includes(input)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
     </script>
-
-<a href="{{ url_for('leaderboard') }}">
-    <button>View Leaderboard</button>
-</a>
-
-    
 </body>
 </html>

@@ -1,20 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D-Trader</title>
-    <link rel="stylesheet" href="/static/styles1.css">
+    <title>D-Trader | Ultimate Auction Marketplace</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
+
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <h1>D-Trader</h1>
-    <h2>Auction Bidding Website</h2>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="nav-left">
+            <a href="/" class="home-button">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <div class="logo-container">
+                <h1 class="logo">D-Trader</h1>
+                <span class="tagline">Trade with Confidence</span>
+            </div>
+        </div>
+        <a href="/login" class="animated-button-link">
+            <button class="animated-button">
+              <span>Login</span>
+              <span></span>
+            </button>
+        </a>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>The Ultimate Auction Marketplace</h2>
+            <p class="description">
+                Welcome to <strong>D-Trader</strong>, the trusted platform where buyers and sellers connect.  
+                List your products for sale or join thrilling <strong>real-time auctions</strong> to grab  
+                the best deals. Whether you're looking to sell rare collectibles or find  
+                unbeatable prices, D-Trader makes online trading effortless, <strong>secure, and exciting</strong>.
+            </p>
+        </div>
+    </section>
+
+    <!-- Invisible hover zones for auto-scroll -->
+    <div class="scroll-hover left-hover"></div>
+    <div class="scroll-hover right-hover"></div>
+
+    <!-- Reasons to Shop -->
+    <section class="reasons">
+        <h2>Why Buy & Sell with D-Trader?</h2>
+        <p class="section-subtitle">Discover the advantages that make us the preferred choice</p>
+
+        <!-- Left Arrow Button -->
+        <button class="scroll-btn left-btn" onclick="scrollLeft()">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <div class="reasons-container" id="scrollContainer">
+            <div class="reason">
+                <div class="reason-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Real-Time Bidding</h3>
+                <p>Engage in live auctions and place instant bids on exclusive products.</p>
+                <a href="#" class="learn-more">Learn more <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="reason">
+                <div class="reason-icon">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+                <h3>Easy Product Listings</h3>
+                <p>Sell your items in minutes with a simple and user-friendly interface.</p>
+                <a href="#" class="learn-more">Learn more <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="reason">
+                <div class="reason-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Secure Transactions</h3>
+                <p>All payments are encrypted, ensuring safe and hassle-free trade.</p>
+                <a href="#" class="learn-more">Learn more <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="reason">
+                <div class="reason-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>24/7 Support</h3>
+                <p>Our dedicated support team is here to assist you anytime.</p>
+                <a href="#" class="learn-more">Learn more <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="reason">
+                <div class="reason-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Market Analytics</h3>
+                <p>Get insights on pricing trends to maximize your profits.</p>
+                <a href="#" class="learn-more">Learn more <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <!-- Right Arrow Button -->
+        <button class="scroll-btn right-btn" onclick="scrollRight()">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section class="featured-section">
+        <h2>Featured Highlights</h2>
+        <p class="section-subtitle">Discover what makes D-Trader special</p>
+    </section>
     
+    <!-- First Feature Section -->
+    <section class="feature-section">
+        <div class="feature-container">
+            <div class="feature-image">
+                <img src="/static/uploads1/sampleimg1.jpg" alt="Easy Selling Platform" class="large-image">
+            </div>
+            <div class="feature-content">
+                <h3>Effortless Selling Experience</h3>
+                <p>Selling and buying products made easy. You can use D-Trader to sell your items at reasonable price.</p>
+                <a href="/login" class="feature-btn">Start Selling</a>
+            </div>
+        </div>
+    </section>
 
+    <!-- Second Feature Section -->
+    <section class="feature-section alt-section">
+        <div class="feature-container reverse">
+            <div class="feature-image">
+                <img src="/static/uploads1/sampleimg2.jpg" alt="Auction System" class="large-image">
+            </div>
+            <div class="feature-content">
+                <h3>Dynamic Auction System</h3>
+                <p>Is your item having trouble selling? We got you, D-Trader has a built in auction/bidding system to help you sell your items.</p>
+                <a href="/leaderboard" class="feature-btn">Explore Auctions</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Ready to Start Trading?</h2>
+            <p>Join thousands of users who buy and sell on D-Trader every day.</p>
+            <div class="cta-buttons">
+                <a href="/products" class="view-products-btn">View All Products</a>
+            </div>
+        </div>
+    </section>
 
-    <a href="/login">login</a>
-    <a href="/products">
-        <button>View Products</button>
-    </a>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>D-Trader</h3>
+                <p>The ultimate platform for buying and selling through direct sales or exciting auctions.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-envelope"></i> <a href="mailto:example@email.com">support_d-trader@email.com</a></p>
+                <p><i class="fas fa-phone"></i>+91 8826670530</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 D-Trader. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Scrolling -->
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/static/script.js"></script>
 </body>
 </html>
