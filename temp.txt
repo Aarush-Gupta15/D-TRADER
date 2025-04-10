@@ -3,52 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Details - {{ product.product_name }}</title>
+    <title>All Products</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles1.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='products.css') }}"> 
 </head>
 <body>
-    <header>
-        <h1>{{ product.product_name }}</h1>
-    </header>
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="{{ url_for('index') }}" class="home-button">
+                <span>Home</span>
+            </a>
+        </div>
 
-    <section class="product-details">
-        <img src="{{ url_for('static', filename=product.image_path.lstrip('static/')) }}" alt="Product Image">
-        <p><strong>Description:</strong> {{ product.description }}</p>
-        <p><strong>Price:</strong> ₹{{ product.amount }}</p>
-        <p><strong>Seller:</strong> {{ product.seller_name }}</p>
+        <div class="nav-search">
+             <h1>D-Trader</h1> 
+            <input type="text" id="searchInput" placeholder="Search Products..." onkeyup="searchItems()" />
+        </div>
 
-        <!-- Start Auction Button -->
-        <form action="{{ url_for('start_auction', product_id=product.product_id) }}" method="POST">
-            <button type="submit">Give this item in auction</button>
+
+        <div class="nav-right">
+            <a href="{{ url_for('leaderboard') }}" class="nav-link">View Leaderboard</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Available Products</h1>
+        <form method="GET" action="{{ url_for('products') }}">
+            <label for="filter">Filter by Product Type:</label>
+            <select name="product_type" id="filter" onchange="this.form.submit()">
+                <option value="">-- All Types --</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Fashion">Fashion</option>
+                <option value="Vehicles">Vehicles</option>
+                <option value="Books">Books</option>
+                <option value="Furniture">Furniture</option>
+                <option value="Home Appliances">Home Appliances</option>
+                <option value="Toys & Games">Toys & Games</option>
+                <option value="Sports">Sports</option>
+                <option value="Mobile Phones">Mobile Phones</option>
+                <option value="Collectibles">Collectibles</option>
+            </select>
         </form>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div id="notification" class="notification">
-                {% for category, message in messages %}
-                    <p class="{{ category }}">{{ message }}</p>
+        
+        <section class="product-list" id="productList">
+            {% if products %}
+                {% for product in products %}
+                    <div class="product-card">
+                        <a href="{{ url_for('single_item', product_id=product['product_id']) }}">
+                            <img src="{{ url_for('static', filename=product.get('image_path', '')[7:]) }}" alt="Product Image">
+                        </a>
+                        <h3>{{ product.get('product_name', 'No Name') }}</h3>
+                        <p><strong>Seller:</strong> {{ product.get('seller_name', 'Unknown') }}</p>
+                        <!-- <p>{{ product.get('description', 'No Description') }}</p> -->
+                        <p><strong>Price:</strong> ₹{{ product.get('amount', 0) }}</p>
+                    </div>
                 {% endfor %}
-            </div>
-            <script>
-                setTimeout(() => {
-                    document.getElementById("notification").style.display = "none";
-                }, 3000);
-            </script>
-        {% endif %}
-    {% endwith %}
-    
+            {% else %}
+                <p>No products available.</p>
+            {% endif %}
+        </section>
+    </div>
 
-        <!-- Edit Product Button -->
-        <!-- <a href="{{ url_for('edit_product', product_id=product.product_id) }}">
-            <button>Edit</button>
-        </a> -->
+    <footer>
+        <p>&copy; 2025 D-Trader. All rights reserved.</p>
+    </footer>
 
-        <!-- Back to My Uploads Button -->
-        <a href="{{ url_for('uploads_page') }}">
-            <button>Back to My Uploads</button>
-        </a>
-    </section>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const productCards = document.querySelectorAll(".product-card");
+
+            productCards.forEach(card => {
+                card.addEventListener("click", function (event) {
+                    if (!event.target.closest("a")) {
+                        event.preventDefault();
+                    }
+                    productCards.forEach(c => c.classList.remove("selected"));
+                    this.classList.add("selected");
+                });
+            });
+        });
+
+        function searchItems() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const productCards = document.querySelectorAll('.product-card');
+            
+            productCards.forEach(card => {
+                const productName = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                if (productName.includes(input) || description.includes(input)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </body>
 </html>
-

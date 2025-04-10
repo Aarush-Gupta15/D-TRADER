@@ -5,22 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Products</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
-
     <link rel="stylesheet" href="{{ url_for('static', filename='products.css') }}"> 
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-left">
-            <a href="{{ url_for('index') }}" class="home-button">
-                <span>Home</span>
-            </a>
+            <a href="{{ url_for('index') }}" class="home-button"><span>Home</span></a>
         </div>
 
         <div class="nav-search">
-             <h1>D-Trader</h1> 
+            <h1>D-Trader</h1>
             <input type="text" id="searchInput" placeholder="Search Products..." onkeyup="searchItems()" />
         </div>
-
 
         <div class="nav-right">
             <a href="{{ url_for('leaderboard') }}" class="nav-link">View Leaderboard</a>
@@ -29,23 +25,26 @@
 
     <div class="container">
         <h1>Available Products</h1>
+
+        <!-- ✅ Filter Form -->
         <form method="GET" action="{{ url_for('products') }}">
             <label for="filter">Filter by Product Type:</label>
             <select name="product_type" id="filter" onchange="this.form.submit()">
                 <option value="">-- All Types --</option>
-                <option value="Electronics">Electronics</option>
-                <option value="Fashion">Fashion</option>
-                <option value="Vehicles">Vehicles</option>
-                <option value="Books">Books</option>
-                <option value="Furniture">Furniture</option>
-                <option value="Home Appliances">Home Appliances</option>
-                <option value="Toys & Games">Toys & Games</option>
-                <option value="Sports">Sports</option>
-                <option value="Mobile Phones">Mobile Phones</option>
-                <option value="Collectibles">Collectibles</option>
+                <option value="Electronics" {% if request.args.get('product_type') == 'Electronics' %}selected{% endif %}>Electronics</option>
+                <option value="Fashion" {% if request.args.get('product_type') == 'Fashion' %}selected{% endif %}>Fashion</option>
+                <option value="Vehicles" {% if request.args.get('product_type') == 'Vehicles' %}selected{% endif %}>Vehicles</option>
+                <option value="Books" {% if request.args.get('product_type') == 'Books' %}selected{% endif %}>Books</option>
+                <option value="Furniture" {% if request.args.get('product_type') == 'Furniture' %}selected{% endif %}>Furniture</option>
+                <option value="Home Appliances" {% if request.args.get('product_type') == 'Home Appliances' %}selected{% endif %}>Home Appliances</option>
+                <option value="Arts and Sculptures" {% if request.args.get('product_type') == 'Arts and Sculptures' %}selected{% endif %}>Arts and Sculptures</option>
+                <!-- <option value="Sports" {% if request.args.get('product_type') == 'Sports' %}selected{% endif %}>Sports</option> -->
+                <!-- <option value="Mobile Phones" {% if request.args.get('product_type') == 'Mobile Phones' %}selected{% endif %}>Mobile Phones</option> -->
+                <option value="Collectibles" {% if request.args.get('product_type') == 'Collectibles' %}selected{% endif %}>Collectibles</option>
             </select>
         </form>
-        
+
+        <!-- ✅ Product Cards -->
         <section class="product-list" id="productList">
             {% if products %}
                 {% for product in products %}
@@ -55,7 +54,6 @@
                         </a>
                         <h3>{{ product.get('product_name', 'No Name') }}</h3>
                         <p><strong>Seller:</strong> {{ product.get('seller_name', 'Unknown') }}</p>
-                        <!-- <p>{{ product.get('description', 'No Description') }}</p> -->
                         <p><strong>Price:</strong> ₹{{ product.get('amount', 0) }}</p>
                     </div>
                 {% endfor %}
@@ -69,29 +67,16 @@
         <p>&copy; 2025 D-Trader. All rights reserved.</p>
     </footer>
 
+    <!-- ✅ JS Search -->
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const productCards = document.querySelectorAll(".product-card");
-
-            productCards.forEach(card => {
-                card.addEventListener("click", function (event) {
-                    if (!event.target.closest("a")) {
-                        event.preventDefault();
-                    }
-                    productCards.forEach(c => c.classList.remove("selected"));
-                    this.classList.add("selected");
-                });
-            });
-        });
-
         function searchItems() {
             const input = document.getElementById('searchInput').value.toLowerCase();
             const productCards = document.querySelectorAll('.product-card');
-            
+
             productCards.forEach(card => {
-                const productName = card.querySelector('h3').textContent.toLowerCase();
-                const description = card.querySelector('p').textContent.toLowerCase();
-                if (productName.includes(input) || description.includes(input)) {
+                const name = card.querySelector('h3').textContent.toLowerCase();
+                const price = card.querySelector('p').textContent.toLowerCase();
+                if (name.includes(input) || price.includes(input)) {
                     card.style.display = '';
                 } else {
                     card.style.display = 'none';

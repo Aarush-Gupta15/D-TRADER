@@ -190,30 +190,12 @@ def products_page():
     return render_template('products.html', products=products)
 @app.route('/products')
 def products():
-    product_type = request.args.get('product_type')
+    product_type = request.args.get('product_type')  # Get the selected type from dropdown
 
     if product_type:
-        query = """
-            SELECT p.product_id, p.product_name, p.description, p.amount, p.image_path, u.username AS seller_name
-            FROM products p
-            JOIN users u ON p.user_id = u.id
-            WHERE p.type = %s
-        """
-        values = (product_type,)
+        products = get_products_by_type(product_type)
     else:
-        query = """
-            SELECT p.product_id, p.product_name, p.description, p.amount, p.image_path, u.username AS seller_name
-            FROM products p
-            JOIN users u ON p.user_id = u.id
-        """
-        values = ()
-
-    conn = getConnection()
-    cur = conn.cursor(dictionary=True)
-    cur.execute(query, values)
-    products = cur.fetchall()
-    cur.close()
-    conn.close()
+        products = get_all_user_products()
 
     return render_template('products.html', products=products)
 

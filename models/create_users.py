@@ -509,3 +509,19 @@ def delete_single_auction(product_id):
     finally:
         mycursor.close()
         myconn.close()
+def get_products_by_type(product_type):
+    myconn = getConnection()
+    mycursor = myconn.cursor(dictionary=True)
+
+    query = """
+        SELECT p.product_id, p.product_name, p.description, p.amount, p.image_path, u.username AS seller_name
+        FROM products p
+        JOIN users u ON p.user_id = u.id
+        WHERE p.type = %s
+    """
+    mycursor.execute(query, (product_type,))
+    products = mycursor.fetchall()
+
+    mycursor.close()
+    myconn.close()
+    return products
