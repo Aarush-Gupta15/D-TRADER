@@ -29,7 +29,23 @@
 
     <div class="container">
         <h1>Available Products</h1>
-
+        <form method="GET" action="{{ url_for('products') }}">
+            <label for="filter">Filter by Product Type:</label>
+            <select name="product_type" id="filter" onchange="this.form.submit()">
+                <option value="">-- All Types --</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Fashion">Fashion</option>
+                <option value="Vehicles">Vehicles</option>
+                <option value="Books">Books</option>
+                <option value="Furniture">Furniture</option>
+                <option value="Home Appliances">Home Appliances</option>
+                <option value="Toys & Games">Toys & Games</option>
+                <option value="Sports">Sports</option>
+                <option value="Mobile Phones">Mobile Phones</option>
+                <option value="Collectibles">Collectibles</option>
+            </select>
+        </form>
+        
         <section class="product-list" id="productList">
             {% if products %}
                 {% for product in products %}
@@ -39,7 +55,7 @@
                         </a>
                         <h3>{{ product.get('product_name', 'No Name') }}</h3>
                         <p><strong>Seller:</strong> {{ product.get('seller_name', 'Unknown') }}</p>
-                        <p>{{ product.get('description', 'No Description') }}</p>
+                        <!-- <p>{{ product.get('description', 'No Description') }}</p> -->
                         <p><strong>Price:</strong> ₹{{ product.get('amount', 0) }}</p>
                     </div>
                 {% endfor %}

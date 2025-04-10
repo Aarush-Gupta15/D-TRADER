@@ -71,16 +71,15 @@ def register(username, password, role):
 
 
 # Function to insert product details into DB
-def insert_product(user_id, product_name, description, amount, image_path):
-    """Inserts product details into the database."""
+def insert_product(user_id, product_name, product_type, description, amount, image_path):
     getConnection()
     mycursor = myconn.cursor()
 
     mysqlquery = """
-    INSERT INTO products (user_id, product_name, description, amount, image_path)
-    VALUES (%s, %s, %s, %s, %s)
+    INSERT INTO products (user_id, product_name, type, description, amount, image_path)
+    VALUES (%s, %s, %s, %s, %s, %s)
     """
-    values = (user_id, product_name, description, amount, image_path)
+    values = (user_id, product_name, product_type, description, amount, image_path)
 
     try:
         mycursor.execute(mysqlquery, values)
@@ -91,6 +90,7 @@ def insert_product(user_id, product_name, description, amount, image_path):
     finally:
         mycursor.close()
         myconn.close()
+
 
 def update_user(user_id, username, role):
     myconn = getConnection()
@@ -131,25 +131,25 @@ def get_user_id(username):
     return user["id"] if user else None  # ✅ Return user ID if found
 
 #get_user_id('E23CSEU0008')
-def insert_product(user_id, product_name, description, amount, image_path):
-    getConnection()
-    mycursor = myconn.cursor()
+# def insert_product(user_id, product_name, description, amount, image_path):
+#     getConnection()
+#     mycursor = myconn.cursor()
 
-    mysqlquery = """
-        INSERT INTO products (user_id, product_name, description, amount, image_path) 
-        VALUES (%s, %s, %s, %s, %s)
-    """
-    values = (user_id, product_name, description, amount, image_path)
+#     mysqlquery = """
+#         INSERT INTO products (user_id, product_name, description, amount, image_path) 
+#         VALUES (%s, %s, %s, %s, %s)
+#     """
+#     values = (user_id, product_name, description, amount, image_path)
 
-    try:
-        mycursor.execute(mysqlquery, values)
-        myconn.commit()
-        print("✅ Product inserted successfully!")
-    except mysql.connector.Error as err:
-        print(f"❌ Error inserting product: {err}")
-    finally:
-        mycursor.close()
-        myconn.close()
+#     try:
+#         mycursor.execute(mysqlquery, values)
+#         myconn.commit()
+#         print("✅ Product inserted successfully!")
+#     except mysql.connector.Error as err:
+#         print(f"❌ Error inserting product: {err}")
+#     finally:
+#         mycursor.close()
+#         myconn.close()
 
 def get_user_products(user_id):
     getConnection()  # Ensure connection is established
@@ -481,3 +481,31 @@ def reset_bid_count():
         mycursor.close()
         myconn.close()
 
+def get_all_auctions():
+    myconn = getConnection()
+    mycursor = myconn.cursor(dictionary=True)
+
+    query = """
+        SELECT a.product_id, a.product_name, a.initial_amount, a.highest_bid, a.bid_count, p.image_path
+        FROM auction a
+        JOIN products p ON a.product_id = p.product_id
+    """
+    mycursor.execute(query)
+    auctions = mycursor.fetchall()
+
+    mycursor.close()
+    myconn.close()
+    return auctions
+
+def delete_single_auction(product_id):
+    myconn = getConnection()
+    mycursor = myconn.cursor()
+
+    try:
+        mycursor.execute("DELETE FROM auction WHERE product_id = %s", (product_id,))
+        myconn.commit()
+    except Exception as e:
+        print(f"❌ Error deleting auction: {e}")
+    finally:
+        mycursor.close()
+        myconn.close()

@@ -11,3 +11,6 @@ VALUES
 
 SELECT * FROM USERS;
 -- drop table users; to delete table
+
+INSERT INTO users (username, password_hash, role)
+VALUES ('admin_user', '1234', 'admin_user');

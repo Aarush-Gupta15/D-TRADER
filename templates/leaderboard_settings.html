@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leaderboard Settings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='leaderboard_settings.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='logo.png') }}">
+</head>
+<body>
+<div class="container">
+    <h1>🏁 Leaderboard Admin Controls</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+            <p class="{{ category }}">{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="btn-group">
+        <form method="POST" action="{{ url_for('reset_auctions') }}">
+            <button class="reset-btn" type="submit">🔁 Reset All Auctions</button>
+        </form>
+        <form method="POST" action="{{ url_for('reset_bids') }}">
+            <button class="reset-btn" type="submit">🧹 Clear All Bids</button>
+        </form>
+    </div>
+
+    <h2>📦 Current Auctions</h2>
+    {% if auctions %}
+    <table>
+        <tr>
+            <th>Image</th>
+            <th>Product</th>
+            <th>Initial</th>
+            <th>Highest</th>
+            <th>Bids</th>
+            <th>Action</th>
+        </tr>
+        {% for auction in auctions %}
+        <tr>
+            <td><img src="{{ url_for('static', filename=auction.image_path.lstrip('static/')) }}" width="60"></td>
+            <td>{{ auction.product_name }}</td>
+            <td>₹{{ auction.initial_amount }}</td>
+            <td>₹{{ auction.highest_bid }}</td>
+            <td>{{ auction.bid_count }}</td>
+            <td>
+                <form method="POST" action="{{ url_for('delete_auction', product_id=auction.product_id) }}">
+                    <button class="delete-btn" type="submit">🗑 Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>No active auctions found.</p>
+    {% endif %}
+
+    <a href="{{ url_for('admin_page') }}" class="back-link">⬅ Back to Admin Panel</a>
+</div>
+</body>
+</html>

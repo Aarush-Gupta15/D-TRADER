@@ -6,7 +6,7 @@
     <title>D-Trader</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles1.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='uploads.css') }}">
 </head>
 <body>
     <header>
@@ -15,6 +15,21 @@
             <input type="text" name="name" placeholder="Item Name" required>
             <textarea name="description" placeholder="Item Description"></textarea>
             <input type="text" name="amount" placeholder="Price" required>
+            <label for="product_type">Product Type:</label>
+            <select name="product_type" id="product_type" required>
+                <option value="">-- Select Product Type --</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Fashion">Fashion</option>
+                <option value="Vehicles">Vehicles</option>
+                <option value="Books">Books</option>
+                <option value="Furniture">Furniture</option>
+                <option value="Home Appliances">Home Appliances</option>
+                <option value="Toys & Games">Toys & Games</option>
+                <option value="Sports">Sports</option>
+                <option value="Mobile Phones">Mobile Phones</option>
+                <option value="Collectibles">Collectibles</option>
+            </select>
+
             
             <!-- ✅ File input allows both Camera & Gallery selection -->
             <label for="file">Choose an image:</label>

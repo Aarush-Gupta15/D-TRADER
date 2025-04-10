@@ -7,16 +7,36 @@ CREATE TABLE users (
 
 -- Ensure only ONE admin exists
 DELIMITER //
-CREATE TRIGGER prevent_multiple_admins
+
+CREATE TRIGGER prevent_multiple_admin_insert
 BEFORE INSERT ON users
 FOR EACH ROW
 BEGIN
-    IF NEW.role = 'admin' AND (SELECT COUNT(*) FROM users WHERE role = 'admin') >= 1 THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Only one admin is allowed!';
+    IF NEW.role = 'admin_user' AND (SELECT COUNT(*) FROM users WHERE role = 'admin_user') >= 1 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = '❌ Only one admin_user is allowed!';
     END IF;
 END;
 //
+
 DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER prevent_multiple_admin_update
+BEFORE UPDATE ON users
+FOR EACH ROW
+BEGIN
+    IF NEW.role = 'admin_user' AND OLD.role != 'admin_user'
+        AND (SELECT COUNT(*) FROM users WHERE role = 'admin_user') >= 1 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = '❌ Only one admin_user is allowed!';
+    END IF;
+END;
+//
+
+DELIMITER ;
+
 -- product table
 
 CREATE TABLE products (
@@ -28,6 +48,9 @@ CREATE TABLE products (
     image_path VARCHAR(255) NOT NULL,
     uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+ALTER TABLE products
+ADD COLUMN type VARCHAR(100) NOT NULL DEFAULT 'Other' AFTER product_name;
+
 
 -- auction table;
 CREATE TABLE auction (

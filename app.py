@@ -92,6 +92,8 @@ def uploads_page():
         name = request.form.get('name')
         description = request.form.get('description', '')
         amount = request.form.get('amount')
+        product_type = request.form.get('product_type')
+
         file = request.files.get('file')
 
         if not name or not file or not amount:
@@ -104,15 +106,10 @@ def uploads_page():
         filename = secure_filename(file.filename)
         file_path = f"static/uploads/{filename}"  
         file.save(file_path)
+        insert_product(user_id, name, product_type, description, amount, file_path)
 
-        insert_product(user_id, name, description, amount, file_path)
 
-    # ✅ Fetch user's uploaded products
-    # user_products = get_user_products(username)
 
-    # #print("Fetched Products:", user_products)  # Debugging print
-
-    # return render_template('uploads.html', user_products=user_products)
     # ✅ Fetch user's uploaded products
     user_id = get_user_id(username)  # Get user_id instead of username
     user_products = get_user_products(user_id)
@@ -191,11 +188,40 @@ def products_page():
     products = get_all_user_products()
     #print(products)  # ✅ Check if seller_name exists in the output
     return render_template('products.html', products=products)
-
 @app.route('/products')
 def products():
-    products = get_all_products()
-    return render_template("products.html", products=products)
+    product_type = request.args.get('product_type')
+
+    if product_type:
+        query = """
+            SELECT p.product_id, p.product_name, p.description, p.amount, p.image_path, u.username AS seller_name
+            FROM products p
+            JOIN users u ON p.user_id = u.id
+            WHERE p.type = %s
+        """
+        values = (product_type,)
+    else:
+        query = """
+            SELECT p.product_id, p.product_name, p.description, p.amount, p.image_path, u.username AS seller_name
+            FROM products p
+            JOIN users u ON p.user_id = u.id
+        """
+        values = ()
+
+    conn = getConnection()
+    cur = conn.cursor(dictionary=True)
+    cur.execute(query, values)
+    products = cur.fetchall()
+    cur.close()
+    conn.close()
+
+    return render_template('products.html', products=products)
+
+
+# @app.route('/products')
+# def products():
+#     products = get_all_products()
+#     return render_template("products.html", products=products)
 
 
 @app.route('/test_redirect')
@@ -291,7 +317,32 @@ def delete_user(user_id):
     myconn.close()
     return redirect(url_for('manage_users'))
 
+@app.route('/Leaderboard-setting')
+def leaderboard_settings():
+    auctions = get_all_auctions()
+    return render_template('leaderboard_settings.html',auctions=auctions)
 
+@app.route('/reset-auctions', methods=['POST'])
+def reset_auctions():
+    # call your reset auction logic here
+    reset_auction_data()
+
+    flash("Auctions reset successfully!", "success")
+    return redirect(url_for('leaderboard_settings'))
+
+@app.route('/reset-bids', methods=['POST'])
+def reset_bids():
+    # call your reset bids logic here
+    reset_bid_count()
+
+    flash("All bids cleared!", "success")
+    return redirect(url_for('leaderboard_settings'))
+
+@app.route('/delete-auction/<int:product_id>', methods=['POST'])
+def delete_auction(product_id):
+    delete_single_auction(product_id)
+    flash(f"🗑 Auction for product ID {product_id} deleted!", "info")
+    return redirect(url_for('leaderboard_settings'))
     
 
 @app.route('/logout')

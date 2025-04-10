@@ -1,28 +1,44 @@
 import os
-from models.create_users import getConnection, reset_bid_count
+import mysql.connector
+from models.create_users import getConnection
 
-# ✅ Get the MySQL connection
-myconn = getConnection()
-mycursor = myconn.cursor()
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'static/uploads')
 
-# ✅ Fetch all image paths before deleting records
-mycursor.execute("SELECT image_path FROM products")
-image_paths = mycursor.fetchall()
+def reset_all_data():
+    try:
+        myconn = getConnection()
+        mycursor = myconn.cursor()
 
-# ✅ Delete all records from `products` table (use DELETE, not TRUNCATE)
-mycursor.execute("DELETE FROM products")
-myconn.commit()
+        # Step 1: Delete from child to parent (order matters!)
+        mycursor.execute("DELETE FROM bids")
+        mycursor.execute("DELETE FROM auction")
+        mycursor.execute("DELETE FROM products")
+        mycursor.execute("DELETE FROM users")
+        myconn.commit()
+        print("✅ All table data deleted.")
 
-# ✅ Delete images from `static/uploads/` directory
-for (path,) in image_paths:
-    if os.path.exists(path):
-        os.remove(path)
-        print(f"🗑 Deleted: {path}")
+        # Step 2: Reset AUTO_INCREMENT values
+        mycursor.execute("ALTER TABLE bids AUTO_INCREMENT = 1")
+        mycursor.execute("ALTER TABLE auction AUTO_INCREMENT = 1")
+        mycursor.execute("ALTER TABLE products AUTO_INCREMENT = 1")
+        mycursor.execute("ALTER TABLE users AUTO_INCREMENT = 1")
+        myconn.commit()
+        print("🔄 AUTO_INCREMENT counters reset.")
 
-# ✅ Close connections
-mycursor.close()
-myconn.close()
-print("✅ Database & Images Deleted Successfully!")
+        # Step 3: Delete all uploaded images
+        if os.path.exists(UPLOAD_FOLDER):
+            for filename in os.listdir(UPLOAD_FOLDER):
+                file_path = os.path.join(UPLOAD_FOLDER, filename)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+                    print(f"🗑 Deleted image: {file_path}")
 
-reset_bid_count()
-print("BIDS ARE RESET")
+        mycursor.close()
+        myconn.close()
+        print("🎉 Reset complete.")
+
+    except mysql.connector.Error as err:
+        print(f"❌ MySQL Error: {err}")
+
+if __name__ == "__main__":
+    reset_all_data()

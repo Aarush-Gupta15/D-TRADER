@@ -1,24 +1,72 @@
-.success-container {
+/* Base Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    background: linear-gradient(to right top, #fdfbfb, #ebedee);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+}
+
+/* Glassmorphism Container */
+.container {
+    background: rgba(255, 255, 255, 0.75);
+    border-radius: 20px;
+    padding: 50px 40px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     text-align: center;
-    margin-top: 100px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 90%;
+    max-width: 500px;
+    transition: all 0.3s ease-in-out;
 }
 
-.success-container h1 {
-    color: green;
-    font-size: 2rem;
+.container:hover {
+    transform: scale(1.01);
 }
 
-.success-container button {
-    margin: 10px;
-    padding: 10px 20px;
-    background-color: #0077cc;
-    color: white;
+/* Heading */
+.container h1 {
+    font-size: 32px;
+    color: #2ecc71;
+    margin-bottom: 20px;
+}
+
+/* Message Text */
+.container p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 40px;
+}
+
+/* Buttons */
+button {
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: 600;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
+    background: linear-gradient(135deg, #6c63ff, #5be0b3);
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 16px rgba(108, 99, 255, 0.3);
+    margin: 10px;
 }
 
-.success-container button:hover {
-    background-color: #005fa3;
+button:hover {
+    background: linear-gradient(135deg, #5be0b3, #6c63ff);
+    box-shadow: 0 8px 20px rgba(91, 224, 179, 0.3);
+    transform: scale(1.05);
+}
+
+a {
+    text-decoration: none;
 }
