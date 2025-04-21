@@ -37,6 +37,3 @@ A real‑time auction bidding platform where **sellers** can list items and **cu
 
 ---
 
-## 📁 Directory Structure
-
-D‑Trader/ ├── app.py # Flask application entry point ├── table_create.py # Creates D_TRADE database + tables ├── requirements.txt # Python dependencies ├── models/ │ └── create_users.py # DB connection + CRUD functions ├── upload_handler.py # File‑upload logic ├── templates/ │ ├── index.html │ ├── login.html │ ├── register.html │ ├── uploads.html │ ├── products.html │ ├── bids.html │ ├── leaderboard.html │ └── … # other Jinja2 templates ├── static/ │ ├── uploads/ # uploaded images │ ├── styles1.css │ └── … # other CSS/JS assets └── README.md
