@@ -1,0 +1,51 @@
+✅ System Requirements
+1. Operating System
+Linux-based system (preferred: Ubuntu 20.04+ or Amazon Linux 2)
+
+Windows 10/11 or macOS (for development/testing)
+
+2. Python
+Python 3.8 or higher
+
+3. Python Libraries (listed in requirements.txt)
+Flask
+
+mysql-connector-python
+
+Jinja2
+
+Werkzeug
+
+gunicorn (for deployment)
+
+dotenv (if environment variables are used)
+
+any other libraries listed in your requirements.txt
+
+4. Database
+MySQL 8.0+
+
+Preconfigured schema with tables: users, products, auction, bids
+
+5. Web Server (For Production Deployment)
+Nginx (for reverse proxy)
+
+Gunicorn (for serving the Flask application)
+
+6. Server / Hosting
+AWS EC2 Instance
+
+Minimum: t2.micro (1 GB RAM, 1 vCPU — Free Tier eligible)
+
+Storage: Minimum 8 GB SSD (to support image uploads)
+
+Open ports: 80 (HTTP), 5000 (Flask dev server), 22 (SSH)
+
+7. Other Requirements
+An internet connection (for access and deployment)
+
+A domain (optional, e.g., aarushgupta.shop)
+
+SSL Certificate (optional for HTTPS)
+
+Static folder storage for product image uploads
